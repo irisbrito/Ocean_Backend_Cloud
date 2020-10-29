@@ -1,88 +1,42 @@
+# Projeto - Ocean Backend Cloud - (Node.js + MongoDB + Heroku)
+Projeto realizado nas aulas de Backend no Ocean Samsung (27/10/2020 e 29/10/2020). 
+Objetivo: trabalhar a construção de APIs REST usando Node.js Express fazendo conexão com o Banco de dados MongoDB. Integrar a API construída nas outras aulas com os serviços de backend na nuvem, utilizando o Heroku, o MongoDB Atlas e NoSQLBooster.
+
+Projeto original do prof Paulo Salvatore: https://github.com/paulosalvatore/Ocean_Backend_Cloud_29_10_2020
+
+# Ferramentas utilizadas:
+1. VSCode
+2. MongoDB Atlas
+3. Postman
+4. Heroku
+5. NoSQLBooster 
+
+# Dependências utilizadas:
+1. Express
+2. Nodemon
+3. Body-parser
+4. MongoDB driver
+
 # Instalação e configuração do projeto
 
-1. Baixar o repositório em https://github.com/paulosalvatore/Ocean_Backend_22_10_2020 (clicando em `Code -> Download ZIP`)
-2. Extrai o arquivo em um pasta, se possível em `C:/GitHub`
-3. Abre essa pasta
-4. A partir daqui depende do Node instalado, então garante que a instalação terminou. https://nodejs.org/en/. Também é importante ter o Visual Studio Code instalado. (https://code.visualstudio.com/download)
-5. No VS Code, clique em `File -> Open Folder`
-6. Procure pela pasta do projeto, abra ela e depois clique em `Selecionar pasta`
-7. Vá em `Terminal -> New Terminal` para abrir uma janela do terminal no VS Code
-8. No terminal, digite o comando `npm install` ou simplesmente `npm i` e faça a instalação do projeto. Note que isso criará a pasta `node_modules`
-9. Para rodar, digite no terminal o comando `node index`. Isso iniciará o servidor na rota `http://localhost:3000`
+ No terminal, digite o comando `npm install`  para a instalação do projeto. Note que isso criará a pasta `node_modules`
+ Para rodar, digite no terminal o comando `node index`. Isso iniciará o servidor na rota `http://localhost:3000`
 
-# Explicação sobre Backend
-
-Servidor
-
-Comunicação é sempre via texto
-
-O que é importante é a estrutura desse texto
-
-Um possível estrutura é o HTML
-
-
-
-Servidor de 1 camada
-
-Central de processamento que faz tudo -> Terminal
-
-
-Servidor de 2 camadas -> Frontend e Backend
-
-Separação entre 2 conceitos importantes:
-
-Frontend: Exibição dos conteúdos (Isso é chamado de Lógica de Apresentação)
-
-Backend: Lógica de negócio (tudo o que é vital para funcionamento da minha aplicação) -> é ele quem acessa o banco de dados
-
-
-Servidores multicamadas
-
-Frontend e Backend
-
-Backend foi quebrado em diversos SERVIÇOS, ou seja, diversos sisteminhas
-
-Microserviços -> serviços de backend pequenos, cada um com sua responsabilidade
-
-
-Quais tecnologias envolvidas nesse processo?
-
-Frontend: HTML e CSS para estruturação/visualização. JavaScript para lógica de apresentação
-Backend: PHP, C#, Java, JavaScript, Python, C++, Kotlin (apenas 1 delas por serviço)
-Banco de Dados: SQL ou MySQL
-
-Como a gente troca ideia com esses 2 caras?
-
-Frontend	 -> 	Backend
-Visualização ->		Processar informação (dados) -> Criar, alterar, remover, editar
-
-
-Frontend -> Requisição HTTP -> Backend recebe a requisição -> Processa a informação -> Envia uma resposta (texto)
-
-Esse texto precisar estar estruturado de uma maneira que o frontend entenda
-
-Paulo;Salvatore;Professor
-
-XML, JSON
-
-Postman
-
-URL -> http://localhost:3000
-Endpoint ou Rota -> [GET] /mensagem
-Endpoint ou Rota -> [POST] /mensagem
-
-Endpoint: [GET] /mensagem
-Descrição: Ler todas as mensagens
-
-Endpoint: [POST] /mensagem
-Descrição: Criar uma mensagem
-
-Endpoint: [GET] /mensagem/{id}
-Descrição: Ler mensagem específica pelo ID
-Exemplo: [GET] /mensagem/1
-
-REST: GET, POST, PUT, DELETE, entre outros
-RESTful: aplicação segue as boas práticas de REST (Get para leitura, Post para criação, e nomenclaturas dos endpoints)
-
+# Configuração de ambiente em Cloud
+1. Certifique-se de que possui instalado os seguintes programas:
+    1. NoSQLBooster: https://nosqlbooster.com/downloads
+    2. NodeJS: https://nodejs.org/en/download/
+2. Criar conta no Heroku e fazer login;
+3. Criar conta no MongoDB Atlas e fazer login;
+4. Pode colocar a linguagem `Node` ou `JavaScript` no Heroku/Atlas, só serve para pesquisa deles;
+5. O heroku é a plataforma em nuvem que vamos utilizar para hospedar nosso projeto backend em NodeJS;
+6. O MongoDB Atlas é a plataforma de banco de dados em nuvem para hospedar um banco MongoDB;
+7. No Heroku, clica na opção `New` e depois em `Create new app`;
+8. Coloque o nome do app, mantém United States e clica em criar;
+9. Na aba de `Deploy`, procura pela parte de `Deployment method` e clica na opção `GitHub`;
+10. Faça a conexão com o GitHub;
+11. Precisa aparecer a opção `Search for a repository to connect to`;
+12. Digite o nome do projeto, clique em Search, buque-o na lista e clique em `Connect`;
+13. Selecione a branch principal, no meu caso chama main e clique em `Enable Automatic Deploys`;
 
 
