@@ -1,8 +1,26 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongodb = require('mongodb');
+const ObjectId = mongodb.ObjectId;
+
+
+(async () => {
+
+const connectionString = 'mongodb+srv://admin:admin@cluster0.ryg6o.mongodb.net/ocean_mongodb?retryWrites=true&w=majority';
+
+console.info("Conectando ao banco de dados MongoDB");
+
+const options = {
+    useUnifiedTopology: true
+};
+
+const client = await mongodb.MongoClient.connect(connectionString, options);
+
+console.info("MongoDB conectado com sucesso!")
+
 const app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Precisamos avisar o Express para utilizar o body-parser
 // Assim, ele saberá como transformar as informações no BODY da requisição
@@ -10,38 +28,25 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
-/*
--> Create, Read (All/Single), Update & Delete
--> Criar, Ler (Tudo ou Individual), Atualizar e Remover
-*/
 
 /*
 URL -> http://localhost:3000
 Endpoint ou Rota -> [GET] /mensagem
 Endpoint ou Rota -> [POST] /mensagem
-
-Endpoint: [GET] /mensagem
-Descrição: Ler todas as mensagens
-
-Endpoint: [POST] /mensagem
-Descrição: Criar uma mensagem
-
-Endpoint: [GET] /mensagem/{id}
-Descrição: Ler mensagem específica pelo ID
-Exemplo: [GET] /mensagem/1
-
-Endpoint: [PUT] /mensagem/{id}
-Descrição: Edita mensagem específica pelo ID
-
-Endpoint: [DELETE] /mensagem/{id}
-Descrição: Remove mensagem específica pelo ID
 */
 
+//teste 
 app.get('/', function (req, res) {
   res.send('Hello World');
 });
 
-const mensagens = [
+// criando o banco de dados
+const db = client.db('ocean_mongodb');
+//conexão com as connections
+const mensagens = db.collection('mensagens');
+
+
+/*const mensagens = [
     {
         id: 1,
         texto: 'Essa é uma mensagem'
@@ -50,51 +55,68 @@ const mensagens = [
         id: 2,
         texto: 'Essa é outra mensagem'
     }
-];
+];*/
 
-// Read All
-app.get('/mensagem', function (req, res) {
-    res.send(mensagens.filter(Boolean));
+// Read All - GET -  ler todas as mensagens
+app.get('/mensagem', async function (req, res) {
+    const findResult = await mensagens.find({}).toArray(); // promise - o findResult vai ser uma lista
+    res.send(findResult); // vai exibir o resultado da busca (as mensagenss) 
 });
 
-// Create
-app.post('/mensagem', function (req, res) {
+// Create - POST - criar uma mensagem
+app.post('/mensagem', async function (req, res) {
     const texto = req.body.texto;
 
     const mensagem = {
-        'id': mensagens.length + 1,
+       // 'id': mensagens.length + 1, (o mongoDB que vai criar)
         'texto': texto
     };
 
-    mensagens.push(mensagem);
+    const resultado = await mensagens.insertOne(mensagem);
 
-    res.send(mensagem);
+    const objetoInserido = resultado.ops[0];
+
+    //mensagens.push(mensagem);
+
+    res.send(objetoInserido);
 });
 
-// Read Single
-app.get('/mensagem/:id', function (req, res) {
+// Read Single - GET - retornar uma única mensagem
+app.get('/mensagem/:id', async function (req, res) {
     const id = req.params.id;
 
-    const mensagem = mensagens[id - 1];
+    const mensagem = await mensagens.findOne({ _id: mongodb.ObjectId(id)});
 
     res.send(mensagem);
 });
 
-// Update
-app.put('/mensagem/:id', function (req, res) {
+// Update - PUT - Atualizar uma mensagem
+app.put('/mensagem/:id', async function (req, res) {
     const id = req.params.id;
     const texto = req.body.texto;
 
-    mensagens[id - 1].texto = texto;
+    const mensagem = {
+        _id: ObjectId(id),
+        texto
+    };
 
-    res.send(mensagens[id - 1]);
+    await mensagens.updateOne(
+        { _id: ObjectId(id)},
+        { $set: mensagem }
+    )
+
+   // mensagens[id - 1].texto = texto;
+
+    res.send(mensagem);
 });
 
-// Delete
+// Delete - deletar uma mensagem pelo ID
 app.delete('/mensagem/:id', function (req, res) {
     const id = req.params.id;
 
-    delete mensagens[id - 1];
+    mensagens.deleteOne({ _id: ObjectId(id) } );
+
+    //delete mensagens[id - 1];
 
     res.send(`A mensagem de ID ${id} foi removida com sucesso.`);
 });
@@ -102,3 +124,5 @@ app.delete('/mensagem/:id', function (req, res) {
 app.listen(port, function () {
     console.info('App rodando em http://localhost:' + port);
 });
+
+})(); //async - tudo que estiver aqui dentro tá dentro de uma função assíncrona
